@@ -1,0 +1,30 @@
+name: opensl
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install opensl
+      env:
+        OPENSL_PKG: libglfw3-dev libgles2-mesa-dev
+      run: |
+        sudo apt-get install $OPENSL_PKG
+    - name: Install Android NDK
+      env: 
+        REPO: https://dl.google.com/android/repository
+        NDK_VERSION: android-ndk-r10e
+      run: |
+        wget -c $REPO/$NDK_VERSION-linux-x86_64.zip
+        unzip $NDK_VERSION-linux-x86_64.zip -d $HOME/$NDK_VERSION
+    - name: Run tests
+      env: 
+        NDK_VERSION: android-ndk-r10e
+      run: |
+        export ANDROID_NDK=$HOME/$NDK_VERSION/$NDK_VERSION
+        export NDK_PLATFORM=android-9/arch-x86
+        cargo test --all-features --verbose
