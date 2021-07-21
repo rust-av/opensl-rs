@@ -9,6 +9,6 @@ repository = "https://github.com/rust-av/opensl-rs"
 build = "build.rs"
 
 [build-dependencies]
-bindgen = "0.58"
+bindgen = "0.59"
 
 [dependencies]
